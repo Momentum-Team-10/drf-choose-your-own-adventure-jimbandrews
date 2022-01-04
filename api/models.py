@@ -13,6 +13,11 @@ class User(AbstractUser):
 
 
 class Book(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['title', 'author'], name='unique_book')
+        ]
+
     title = models.CharField(max_length=250)
     author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books')
     featured = models.BooleanField(default=False)
@@ -20,6 +25,11 @@ class Book(models.Model):
 
 
 class Author(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_author')
+        ]
+
     name = models.CharField(max_length=150)
 
 
@@ -31,6 +41,11 @@ class Review(models.Model):
 
 
 class Tracker(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'book'], name='unique_tracker')
+        ]
+
     WANT = 'WANT'
     READING = 'READ'
     DONE = 'DONE'
@@ -49,10 +64,20 @@ class Tracker(models.Model):
 
 
 class Genre(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_genre')
+        ]
+
     name = models.CharField(max_length=150)
     books = models.ManyToManyField('Book', related_name='genres', blank=True)
 
 
 class Tag(models.Model):
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_tag')
+        ]
+
     name = models.CharField(max_length=150)
     books = models.ManyToManyField('Book', related_name='tags', blank=True)
