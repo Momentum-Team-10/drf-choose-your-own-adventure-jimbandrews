@@ -31,10 +31,21 @@ class Review(models.Model):
 
 
 class Tracker(models.Model):
+    WANT = 'WANT'
+    READING = 'READ'
+    DONE = 'DONE'
+    STATUS_CHOICES = [
+        (WANT, 'Want to Read'),
+        (READING, 'Currently Reading'),
+        (DONE, 'Finished Reading'),
+    ]
+    status = models.CharField(
+        max_length=4,
+        choices=STATUS_CHOICES,
+        default=WANT,
+    )
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tracker')
-    want = models.ManyToManyField('Book', related_name='want_to_read', blank=True)
-    reading = models.ManyToManyField('Book', related_name='reading', blank=True)
-    finished = models.ManyToManyField('Book', related_name='finished', blank=True)
+    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='tracker')
 
 
 class Genre(models.Model):
