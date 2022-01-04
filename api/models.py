@@ -22,6 +22,9 @@ class Book(models.Model):
     author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books')
     featured = models.BooleanField(default=False)
     added = models.DateTimeField(auto_now_add=True)
+    added_by = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name='added_books', null=True)
+    genres = models.ManyToManyField('Genre', related_name='books', blank=True)
+    tags = models.ManyToManyField('Tag', related_name='books', blank=True)
 
     def __repr__(self):
         return f"<Book name={self.title}>"
@@ -94,7 +97,6 @@ class Genre(models.Model):
         ]
 
     name = models.CharField(max_length=150)
-    books = models.ManyToManyField('Book', related_name='genres', blank=True)
 
     def __repr__(self):
         return f"<Genre name={self.name}>"
@@ -110,7 +112,6 @@ class Tag(models.Model):
         ]
 
     name = models.CharField(max_length=150)
-    books = models.ManyToManyField('Book', related_name='tags', blank=True)
 
     def __repr__(self):
         return f"<Tag name={self.name}>"
