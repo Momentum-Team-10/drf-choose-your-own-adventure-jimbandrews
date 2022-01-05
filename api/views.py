@@ -10,7 +10,6 @@ class BookViewSet(ModelViewSet):
     serializer_class = BookSerializer
 
     def perform_create(self, serializer):
-        breakpoint()
         author_name = self.request.data['author']
         author = Author.objects.get(name=author_name)
         serializer.save(author=author)
