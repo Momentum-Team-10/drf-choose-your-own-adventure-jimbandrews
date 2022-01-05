@@ -64,7 +64,7 @@ class ReviewForBookSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    author = AuthorForBookSerializer(many=True, read_only=True)
+    author = AuthorForBookSerializer(read_only=True)
     genres = GenreForBookSerializer(many=True, read_only=True)
     tags = TagForBookSerializer(many=True, read_only=True)
     reviews = ReviewForBookSerializer(many=True, read_only=True)
