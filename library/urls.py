@@ -16,15 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from api.views import AuthorViewSet, BookViewSet
+from api import views
 
 router = DefaultRouter()
-router.register('books', BookViewSet)
-router.register('authors', AuthorViewSet)
+router.register('books', views.BookViewSet)
+router.register('authors', views.AuthorViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.authtoken')),
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('featured/', views.FeaturedBooksListView.as_view(), name='featured_books')
 ]
