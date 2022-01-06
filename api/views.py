@@ -1,8 +1,8 @@
 from typing import List
 from django.db.models.base import Model
 from django.shortcuts import render
-from .models import Book, Author
-from .serializers import BookSerializer, AuthorSerializer
+from .models import Book, Author, Review
+from .serializers import BookSerializer, AuthorSerializer, ReviewSerializer
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import mixins
@@ -16,6 +16,12 @@ class BookViewSet(ModelViewSet):
         author_name = self.request.data['author']
         author, created = Author.objects.get_or_create(name=author_name)
         serializer.save(author=author, added_by=self.request.user)
+
+
+class ReviewViewSet(ModelViewSet):
+    serializer_class = ReviewSerializer
+    def get_queryset(self):
+        return Review.objects.filter(book=self.kwargs['book_pk'])
 
 
 class AuthorViewSet(mixins.ListModelMixin,
