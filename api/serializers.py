@@ -74,7 +74,7 @@ class BookSerializer(serializers.ModelSerializer):
             'pk',
             'title',
             'author',
-            'featured',
+            'pub_year',
             'genres',
             'tags',
             'reviews',
@@ -87,6 +87,7 @@ class BookForAuthorSerializer(serializers.ModelSerializer):
         fields = (
             'pk',
             'title',
+            'pub_year'
         )
 
 
