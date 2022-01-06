@@ -203,7 +203,7 @@ GET /books/53/reviews/
 ```
 
 ## Add a Review
-Authentication required.
+Token authentication required.
 
 ### Request
 ```json
@@ -233,6 +233,7 @@ POST /books/51/reviews/
 ```
 
 ## Delete a Review
+Admin authentication required.
 
 ### Request
 ```json

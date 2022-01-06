@@ -1,8 +1,7 @@
-from typing import List
-from django.db.models.base import Model
-from django.shortcuts import render
 from .models import Book, Author, Review
 from .serializers import BookSerializer, AuthorSerializer, ReviewSerializer
+from .permissions import IsAuthor
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework import mixins
@@ -17,6 +16,15 @@ class BookViewSet(ModelViewSet):
         author, created = Author.objects.get_or_create(name=author_name)
         serializer.save(author=author, added_by=self.request.user)
 
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [AllowAny]
+        elif self.request.method == 'POST':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
@@ -27,6 +35,20 @@ class ReviewViewSet(ModelViewSet):
     def perform_create(self, serializer):
         book = Book.objects.get(pk=self.kwargs['book_pk'])
         serializer.save(user=self.request.user, book=book)
+
+    def get_permissions(self):
+        safe = ('GET', 'HEAD', 'OPTIONS')
+        author_methods = ('PATCH', 'PUT')
+        if self.request.method in safe:
+            permission_classes = [AllowAny]
+        elif self.request.method == 'POST':
+            permission_classes = [IsAuthenticated]
+        elif self.request.method in author_methods:
+            permission_classes = [IsAuthor]
+        else:
+            permission_classes = [IsAdminUser]
+        breakpoint()
+        return [permission() for permission in permission_classes]
 
 
 class AuthorViewSet(mixins.ListModelMixin,
