@@ -173,6 +173,77 @@ POST /books/
 }
 ```
 
+## List a Book's Reviews
+
+### Request
+```json
+GET /books/53/reviews/
+```
+
+### Response
+```json
+200 OK
+[
+    {
+        "pk": 12,
+        "user": {
+            "pk": 144,
+            "username": "simplereader"
+        },
+        "book": {
+            "pk": 53,
+            "title": "The Haunting of Hill House",
+            "author": "Shirley Jackson"
+        },
+        "created": "2021-12-15T00:19:51.903050Z",
+        "text": "Truly terrifying!"
+    },
+    (...)
+]
+```
+
+## Add a Review
+Authentication required.
+
+### Request
+```json
+POST /books/51/reviews/
+{
+	"text": "Reads like a long roadtrip, but the atmosphere is excellent."
+}
+```
+
+### Response
+```json
+201 Created
+{
+	"pk": 68,
+	"user": {
+		"pk": 144,
+		"username": "simplereader"
+	},
+	"book": {
+		"pk": 51,
+		"title": "American Gods",
+		"author": "Neil Gaiman"
+	},
+	"created": "2022-01-06T19:35:14.639079Z",
+	"text": "Reads like a long roadtrip, but the atmosphere is excellent."
+}
+```
+
+## Delete a Review
+
+### Request
+```json
+DELETE /books/43/reviews/92/
+```
+
+### Response
+```json
+204 No Content
+```
+
 ## List Featured Books
 
 ### Request
