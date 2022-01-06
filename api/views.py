@@ -20,8 +20,13 @@ class BookViewSet(ModelViewSet):
 
 class ReviewViewSet(ModelViewSet):
     serializer_class = ReviewSerializer
+
     def get_queryset(self):
         return Review.objects.filter(book=self.kwargs['book_pk'])
+
+    def perform_create(self, serializer):
+        book = Book.objects.get(pk=self.kwargs['book_pk'])
+        serializer.save(user=self.request.user, book=book)
 
 
 class AuthorViewSet(mixins.ListModelMixin,
