@@ -15,15 +15,27 @@ class User(AbstractUser):
 class Book(models.Model):
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['title', 'author'], name='unique_book')
+            models.UniqueConstraint(
+                fields=['title', 'author'],
+                name='unique_book'
+            )
         ]
 
     title = models.CharField(max_length=250)
-    author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books')
+    author = models.ForeignKey(
+        'Author',
+        on_delete=models.CASCADE,
+        related_name='books'
+    )
     pub_year = models.IntegerField(null=True)
     featured = models.BooleanField(default=False)
     added = models.DateTimeField(auto_now_add=True)
-    added_by = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name='added_books', null=True)
+    added_by = models.ForeignKey(
+        'User',
+        on_delete=models.DO_NOTHING,
+        related_name='added_books',
+        null=True
+    )
     genres = models.ManyToManyField('Genre', related_name='books', blank=True)
     tags = models.ManyToManyField('Tag', related_name='books', blank=True)
 
@@ -50,9 +62,17 @@ class Author(models.Model):
 
 
 class Review(models.Model):
-    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='reviews')
+    book = models.ForeignKey(
+        'Book',
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
     text = models.TextField()
-    user = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name='reviews')
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.DO_NOTHING,
+        related_name='reviews'
+    )
     created = models.DateTimeField(auto_now_add=True)
 
     def __repr__(self):
@@ -65,7 +85,10 @@ class Review(models.Model):
 class Tracker(models.Model):
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'book'], name='unique_tracker')
+            models.UniqueConstraint(
+                fields=['user', 'book'],
+                name='unique_tracker'
+            )
         ]
 
     WANT = 'WANT'
@@ -81,8 +104,16 @@ class Tracker(models.Model):
         choices=STATUS_CHOICES,
         default=WANT,
     )
-    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='tracker')
-    book = models.ForeignKey('Book', on_delete=models.CASCADE, related_name='tracker')
+    user = models.ForeignKey(
+        'User',
+        on_delete=models.CASCADE,
+        related_name='tracker'
+    )
+    book = models.ForeignKey(
+        'Book',
+        on_delete=models.CASCADE,
+        related_name='tracker'
+    )
 
     def __repr__(self):
         return f"<Tracker user={self.user.username} book={self.book.title}>"
