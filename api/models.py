@@ -20,6 +20,7 @@ class Book(models.Model):
 
     title = models.CharField(max_length=250)
     author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books')
+    pub_year = models.IntegerField(null=True)
     featured = models.BooleanField(default=False)
     added = models.DateTimeField(auto_now_add=True)
     added_by = models.ForeignKey('User', on_delete=models.DO_NOTHING, related_name='added_books', null=True)
