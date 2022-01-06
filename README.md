@@ -36,6 +36,7 @@ DATABASE_URL=postgres://<postgresql username>:@127.0.0.1:5432/<database name>
 # Endpoint Documentation
 
 If you are running the server locally, the base URL will be displayed in the terminal after starting the server.
+Unless indicated otherwise, the request body should be empty.
 
 ## User Login
 Username and password required.
@@ -58,7 +59,7 @@ POST /auth/token/login/
 ```
 
 ## User Logout
-Token authentication required, body should be empty.
+Token authentication required.
 
 ### Request
 ```json
@@ -121,7 +122,6 @@ GET /books/
 
 ## Book Detail
 Number at the end of the URL should correspond to the book's pk.
-Body should be empty.
 ### Request
 ```json
 GET /books/53/
@@ -174,7 +174,6 @@ POST /books/
 ```
 
 ## List Featured Books
-Body should be empty.
 
 ### Request
 ```json
@@ -198,4 +197,58 @@ GET /featured/
 	},
     (...)
 ]
+```
+
+## List Authors
+
+### Request
+```json
+GET /authors/
+```
+
+### Response
+```json
+200 OK
+[
+	{
+		"pk": 1,
+		"name": "Charles Dickens",
+		"books": [
+			{
+				"pk": 50,
+				"title": "Great Expectations",
+				"pub_year": 1861
+			},
+			{
+				"pk": 49,
+				"title": "A Tale of Two Cities",
+				"pub_year": 1859
+			}
+		]
+	},
+    (...)
+]
+```
+
+## Author Detail
+
+### Request
+```json
+GET /authors/3/
+```
+
+### Response
+```json
+200 OK
+{
+	"pk": 3,
+	"name": "Shirley Jackson",
+	"books": [
+		{
+			"pk": 53,
+			"title": "The Haunting of Hill House",
+			"pub_year": 1959
+		}
+	]
+}
 ```
