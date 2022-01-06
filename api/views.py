@@ -4,7 +4,8 @@ from django.shortcuts import render
 from .models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
 from rest_framework.generics import ListAPIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework import mixins
 
 
 class BookViewSet(ModelViewSet):
@@ -17,7 +18,8 @@ class BookViewSet(ModelViewSet):
         serializer.save(author=author, added_by=self.request.user)
 
 
-class AuthorViewSet(ModelViewSet):
+class AuthorViewSet(mixins.ListModelMixin,
+    mixins.RetrieveModelMixin, GenericViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
