@@ -13,7 +13,7 @@ class BookViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         author_name = self.request.data['author']
-        author = Author.objects.get(name=author_name)
+        author, created = Author.objects.get_or_create(name=author_name)
         serializer.save(author=author, added_by=self.request.user)
 
 
