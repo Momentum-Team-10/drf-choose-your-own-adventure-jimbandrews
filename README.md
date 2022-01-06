@@ -119,6 +119,31 @@ GET /books/
 ]
 ```
 
+## Book Detail
+Number at the end of the URL should correspond to the book's pk.
+Body should be empty.
+### Request
+```json
+GET /books/53/
+```
+
+### Response
+```json
+200 OK
+{
+	"pk": 53,
+	"title": "The Haunting of Hill House",
+	"author": {
+		"pk": 3,
+		"name": "Shirley Jackson"
+	},
+	"pub_year": 1959,
+	"genres": [],
+	"tags": [],
+	"reviews": []
+}
+```
+
 ## Add a New Book
 Token authentication required. Title and author fields required.
 
