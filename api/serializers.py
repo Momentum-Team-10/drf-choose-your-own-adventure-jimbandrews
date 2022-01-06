@@ -49,7 +49,7 @@ class BookForReviewSerializer(serializers.ModelSerializer):
         )
 
 
-class ReviewForBookSerializer(serializers.ModelSerializer):
+class ReviewSerializer(serializers.ModelSerializer):
     user = UserNestedSerializer(read_only=True)
     book = BookForReviewSerializer(read_only=True)
     class Meta:
@@ -67,7 +67,7 @@ class BookSerializer(serializers.ModelSerializer):
     author = AuthorForBookSerializer(read_only=True)
     genres = GenreForBookSerializer(many=True, read_only=True)
     tags = TagForBookSerializer(many=True, read_only=True)
-    reviews = ReviewForBookSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = Book
         fields = (
