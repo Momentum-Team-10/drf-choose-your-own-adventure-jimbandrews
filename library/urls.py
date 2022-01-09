@@ -25,6 +25,7 @@ router.register('authors', views.AuthorViewSet)
 
 books_router = routers.NestedSimpleRouter(router, 'books', lookup='book')
 books_router.register('reviews', views.ReviewViewSet, basename='book-reviews')
+books_router.register('tracker', views.TrackerViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

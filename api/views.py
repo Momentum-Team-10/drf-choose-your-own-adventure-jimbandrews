@@ -1,5 +1,5 @@
-from .models import Book, Author, Review
-from .serializers import BookSerializer, AuthorSerializer, ReviewSerializer
+from .models import Book, Author, Review, Tracker
+from .serializers import BookSerializer, AuthorSerializer, ReviewSerializer, TrackerSerializer
 from .permissions import IsAuthor
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.generics import ListAPIView
@@ -63,3 +63,8 @@ class FeaturedBooksListView(ListAPIView):
     def get_queryset(self):
         queryset = Book.objects.filter(featured=True)
         return queryset
+
+
+class TrackerViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, GenericViewSet):
+    queryset = Tracker.objects.all()
+    serializer_class = TrackerSerializer
