@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.relations import StringRelatedField
 from .models import User, Book, Author, Review, Tracker, Tag, Genre
 
 
@@ -67,6 +68,7 @@ class BookSerializer(serializers.ModelSerializer):
     author = AuthorForBookSerializer(read_only=True)
     genres = GenreForBookSerializer(many=True, read_only=True)
     tags = TagForBookSerializer(many=True, read_only=True)
+    status = serializers.SerializerMethodField()
     reviews = ReviewSerializer(many=True, read_only=True)
     class Meta:
         model = Book
@@ -77,8 +79,24 @@ class BookSerializer(serializers.ModelSerializer):
             'pub_year',
             'genres',
             'tags',
+            'status',
             'reviews',
         )
+
+    def get_status(self, obj):
+        # grab user making request from serializer context
+        user = None
+        request = self.context.get('request')
+        if request and hasattr(request, 'user'):
+            user = request.user
+        else:
+            return "None"
+        
+        # check if tracker object exists and returns it
+        tracker = Tracker.objects.filter(book=obj, user=user)
+        if tracker.exists():
+            return str(tracker[0])
+        return "None"
 
 
 class BookForAuthorSerializer(serializers.ModelSerializer):
@@ -99,4 +117,17 @@ class AuthorSerializer(serializers.ModelSerializer):
             'pk',
             'name',
             'books',
+        )
+
+
+class TrackerSerializer(serializers.ModelSerializer):
+    user = UserNestedSerializer(read_only=True)
+    book = BookForReviewSerializer(read_only=True)
+    class Meta:
+        model = Tracker
+        fields = (
+            'pk',
+            'user',
+            'book',
+            'status',
         )
