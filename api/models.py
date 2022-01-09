@@ -107,19 +107,19 @@ class Tracker(models.Model):
     user = models.ForeignKey(
         'User',
         on_delete=models.CASCADE,
-        related_name='tracker'
+        related_name='status'
     )
     book = models.ForeignKey(
         'Book',
         on_delete=models.CASCADE,
-        related_name='tracker'
+        related_name='status'
     )
 
     def __repr__(self):
         return f"<Tracker user={self.user.username} book={self.book.title}>"
 
     def __str__(self):
-        return self.user
+        return self.status
 
 
 class Genre(models.Model):
